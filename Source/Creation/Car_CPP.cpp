@@ -48,6 +48,7 @@ ACar_CPP::ACar_CPP()
 void ACar_CPP::Tick(float DeltaTime)
 {
 
+	UpdateAirControl(DeltaTime);
 }
 
 void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -65,6 +66,9 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	//Action Inputs (Handbrake on and off)
 	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &ACar_CPP::HandBrakeON);
 	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &ACar_CPP::HandBrakeOFF);
+
+	//Action Inputs (Changing Perspective from Third Person to First Person)
+	PlayerInputComponent->BindAction("Change Perspective", IE_Pressed, this, &ACar_CPP::perspectiveToggle);
 }
 
 
@@ -91,6 +95,11 @@ void ACar_CPP::HandBrakeOFF()
 	GetVehicleMovementComponent()->SetHandbrakeInput(false);
 }
 
+void ACar_CPP::UpdateAirControl(float DeltaTime)
+{
+
+}
+
 
 //Camera Definition Functions (Pitch and Yaw)
 void ACar_CPP::CameraPitch(float axisValue)
@@ -106,5 +115,20 @@ void ACar_CPP::CameraYaw(float axisValue)
 	if (axisValue != 0.0f)
 	{
 		AddControllerYawInput(axisValue);
+	}
+}
+
+void ACar_CPP::perspectiveToggle()
+{
+	float targetArm = SpringArm->TargetArmLength;
+	if (targetArm == 1000.0f)
+	{
+		SpringArm->TargetArmLength = 0.0f;
+		SpringArm->bEnableCameraLag = false;
+	}
+	else
+	{
+		SpringArm->TargetArmLength = 1000.0f;
+		SpringArm->bEnableCameraLag = true;
 	}
 }

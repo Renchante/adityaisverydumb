@@ -31,31 +31,34 @@ public:
 
 	//Movement Car Declaration Functions (Throttle, Steering, HandBrake)
 	UFUNCTION(BlueprintCallable)
-		void Throttle(float value);
+	void Throttle(float value);
 
 	UFUNCTION(BlueprintCallable)
-		void Steering(float value);
+	void Steering(float value);
 
 	UFUNCTION(BlueprintCallable)
-		void HandBrakeON();
+	void HandBrakeON();
 	UFUNCTION(BlueprintCallable)
-		void HandBrakeOFF();
+	void HandBrakeOFF();
 
+	UFUNCTION(BlueprintCallable)
+	void UpdateAirControl(float DeltaTime);
 
 	//Camera and Mouse Input Function (Pitch and Yaw)
 	UFUNCTION(BlueprintCallable)
-		void CameraPitch(float axisValue);
+	void CameraPitch(float axisValue);
 
 	UFUNCTION(BlueprintCallable)
-		void CameraYaw(float axisValue);
+	void CameraYaw(float axisValue);
 
+	void perspectiveToggle();
 
 protected:
 	//Camera Components 
 	UPROPERTY(EditAnywhere)
-		class USpringArmComponent* SpringArm;
+	class USpringArmComponent* SpringArm;
 
 	UPROPERTY(EditAnywhere)
-		class UCameraComponent* Camera;
+	class UCameraComponent* Camera;
 
 };
