@@ -14,7 +14,7 @@ ACar_CPP::ACar_CPP()
 	vehicleMovement->MaxNormalizedTireLoadFiltered = 2.0f;
 
 	//Torque Setup
-	vehicleMovement->MaxEngineRPM = 5700.0f;
+	vehicleMovement->MaxEngineRPM = 10000.0f;
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->Reset();
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 400.0f);
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(1890.0f, 500.0f);
@@ -35,6 +35,11 @@ ACar_CPP::ACar_CPP()
 	vehicleMovement->TransmissionSetup.GearAutoBoxLatency = 1.0f;
 
 
+	//Setting up Variables (Speed)
+	Speed = 4000.0f;
+	throttleSpeed = 10.0f;
+	steeringSpeed = 1.0f;
+
 	//Setting up the spring arm and camera components 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -45,11 +50,11 @@ ACar_CPP::ACar_CPP()
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 }
 
-void ACar_CPP::Tick(float DeltaTime)
+/* void ACar_CPP::Tick(float DeltaTime)
 {
 
 	UpdateAirControl(DeltaTime);
-}
+} */
 
 void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -67,6 +72,10 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &ACar_CPP::HandBrakeON);
 	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &ACar_CPP::HandBrakeOFF);
 
+	//Action Inputs (Supercharge on and off)
+	PlayerInputComponent->BindAction("Supercharge", IE_Pressed, this, &ACar_CPP::superChargeCarON);
+	PlayerInputComponent->BindAction("Supercharge", IE_Released, this, &ACar_CPP::superChargeCarOFF);
+
 	//Action Inputs (Changing Perspective from Third Person to First Person)
 	PlayerInputComponent->BindAction("Change Perspective", IE_Pressed, this, &ACar_CPP::perspectiveToggle);
 }
@@ -75,11 +84,13 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 //Car Movement Definition Functions (Throttle and Steering)
 void ACar_CPP::Throttle(float value)
 {
+	value *= throttleSpeed;
 	GetVehicleMovementComponent()->SetThrottleInput(value);
 }
 
 void ACar_CPP::Steering(float value)
 {
+	value *= steeringSpeed;
 	GetVehicleMovementComponent()->SetSteeringInput(value);
 }
 
@@ -98,6 +109,18 @@ void ACar_CPP::HandBrakeOFF()
 void ACar_CPP::UpdateAirControl(float DeltaTime)
 {
 
+}
+
+//Supercharge Definition Functions (On and Off)
+void ACar_CPP::superChargeCarON()
+{
+	FVector newVelocity = GetActorForwardVector() * Speed;
+	GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
+}
+
+void ACar_CPP::superChargeCarOFF()
+{
+	
 }
 
 

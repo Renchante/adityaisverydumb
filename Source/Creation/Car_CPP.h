@@ -10,7 +10,7 @@
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "WheeledVehicleMovementComponent4W.h"
-
+#include "Components/PrimitiveComponent.h"
 
 #include "Car_CPP.generated.h"
 
@@ -25,11 +25,11 @@ class CREATION_API ACar_CPP : public AWheeledVehicle
 public:
 	ACar_CPP();
 
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime) override;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
-	//Movement Car Declaration Functions (Throttle, Steering, HandBrake)
+	//Movement Car Declaration Functions (Throttle, Steering, HandBrake, Supercharge)
 	UFUNCTION(BlueprintCallable)
 	void Throttle(float value);
 
@@ -44,6 +44,12 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateAirControl(float DeltaTime);
 
+	UFUNCTION(BlueprintCallable)
+	void superChargeCarON();
+
+	UFUNCTION(BlueprintCallable)
+	void superChargeCarOFF();
+
 	//Camera and Mouse Input Function (Pitch and Yaw)
 	UFUNCTION(BlueprintCallable)
 	void CameraPitch(float axisValue);
@@ -52,6 +58,17 @@ public:
 	void CameraYaw(float axisValue);
 
 	void perspectiveToggle();
+
+
+	//Variables for the car (Speed, Throttle Speed, Steering Speed)
+	UPROPERTY(EditAnywhere)
+	float Speed;
+
+	UPROPERTY(EditAnywhere)
+	float throttleSpeed;
+
+	UPROPERTY(EditAnywhere)
+	float steeringSpeed;
 
 protected:
 	//Camera Components 
