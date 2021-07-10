@@ -29,7 +29,7 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
-	//Movement Car Declaration Functions (Throttle, Steering, HandBrake, Supercharge)
+	//Movement Car Declaration Functions (Throttle, Steering, HandBrake, Supercharge, Hyperbrake)
 	UFUNCTION(BlueprintCallable)
 	void Throttle(float value);
 
@@ -48,7 +48,8 @@ public:
 	void superChargeCarON();
 
 	UFUNCTION(BlueprintCallable)
-	void superChargeCarOFF();
+	void hyperBrake();
+
 
 	//Camera and Mouse Input Function (Pitch and Yaw)
 	UFUNCTION(BlueprintCallable)

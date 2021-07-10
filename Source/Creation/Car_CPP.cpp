@@ -43,7 +43,7 @@ ACar_CPP::ACar_CPP()
 	//Setting up the spring arm and camera components 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->TargetArmLength = 750.0f;
 	SpringArm->bUsePawnControlRotation = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -68,13 +68,17 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("LookUp", this, &ACar_CPP::CameraPitch);
 	PlayerInputComponent->BindAxis("Turn", this, &ACar_CPP::CameraYaw);
 
+
+
 	//Action Inputs (Handbrake on and off)
 	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &ACar_CPP::HandBrakeON);
 	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &ACar_CPP::HandBrakeOFF);
 
-	//Action Inputs (Supercharge on and off)
+	//Action Inputs (Supercharge on)
 	PlayerInputComponent->BindAction("Supercharge", IE_Pressed, this, &ACar_CPP::superChargeCarON);
-	PlayerInputComponent->BindAction("Supercharge", IE_Released, this, &ACar_CPP::superChargeCarOFF);
+
+	//Action Input (Hyperbrake)
+	PlayerInputComponent->BindAction("Hyperbrake", IE_Pressed, this, &ACar_CPP::hyperBrake);
 
 	//Action Inputs (Changing Perspective from Third Person to First Person)
 	PlayerInputComponent->BindAction("Change Perspective", IE_Pressed, this, &ACar_CPP::perspectiveToggle);
@@ -118,11 +122,12 @@ void ACar_CPP::superChargeCarON()
 	GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
 }
 
-void ACar_CPP::superChargeCarOFF()
+//Hyperbrake Definition Function
+void ACar_CPP::hyperBrake()
 {
-	
+	FVector newVelocity = GetVelocity() * -1.0f;
+	GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
 }
-
 
 //Camera Definition Functions (Pitch and Yaw)
 void ACar_CPP::CameraPitch(float axisValue)
@@ -144,14 +149,14 @@ void ACar_CPP::CameraYaw(float axisValue)
 void ACar_CPP::perspectiveToggle()
 {
 	float targetArm = SpringArm->TargetArmLength;
-	if (targetArm == 1000.0f)
+	if (targetArm == 750.0f)
 	{
 		SpringArm->TargetArmLength = 0.0f;
 		SpringArm->bEnableCameraLag = false;
 	}
 	else
 	{
-		SpringArm->TargetArmLength = 1000.0f;
+		SpringArm->TargetArmLength = 750.0f;
 		SpringArm->bEnableCameraLag = true;
 	}
 }
