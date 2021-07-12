@@ -118,15 +118,23 @@ void ACar_CPP::UpdateAirControl(float DeltaTime)
 //Supercharge Definition Functions (On and Off)
 void ACar_CPP::superChargeCarON()
 {
-	FVector newVelocity = GetActorForwardVector() * Speed;
-	GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
+	float zVelocity = GetMesh()->GetPhysicsLinearVelocity().Z;
+	if (zVelocity < 10.0f && zVelocity > -10.0f)
+	{
+		FVector newVelocity = GetActorForwardVector() * Speed;
+		GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
+	}
 }
 
 //Hyperbrake Definition Function
 void ACar_CPP::hyperBrake()
 {
-	FVector newVelocity = GetVelocity() * -1.0f;
-	GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
+	float zVelocity = GetMesh()->GetPhysicsLinearVelocity().Z;
+	if (zVelocity < 10.0f && zVelocity > -10.0f)
+	{
+		FVector newVelocity = GetVelocity() * -1.0f;
+		GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
+	}
 }
 
 //Camera Definition Functions (Pitch and Yaw)
