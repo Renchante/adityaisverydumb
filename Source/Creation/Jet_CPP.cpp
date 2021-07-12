@@ -10,13 +10,15 @@ AJet_CPP::AJet_CPP()
 	PrimaryActorTick.bCanEverTick = true;
 
 
+	//Define Jet Movement Variables (Throttle, Max Throttle)
+	throttleValue = 0.0f;
+	maxThrottleValue = 3000.0f;
+
 	//Define all the Components for the Jet
-	JetMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Jet Mesh"));
+	JetMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Jet Mesh"));
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
-	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->bEnableCameraLag = true;
-	SpringArm->TargetArmLength = 1000.0f;
+	SpringArm->SetupAttachment(JetMesh);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
@@ -36,6 +38,8 @@ void AJet_CPP::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	FVector newVelocity = GetActorForwardVector() * throttleValue;
+	JetMesh->SetPhysicsLinearVelocity(newVelocity);
 }
 
 // Called to bind functionality to input
@@ -55,6 +59,8 @@ void AJet_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis("Throttle", this, &AJet_CPP::jetThrottle);
 
 	/* ACTION INPUTS */
+	//Jet Feature Inputs (Shootings)
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AJet_CPP::shootBullets);
 }
 
 //Camera Definition Functions (Pitch & Yaw)
@@ -78,7 +84,19 @@ void AJet_CPP::cameraYaw(float value)
 //Jet Movement Declaration Functions (Throttle, Pitch, Roll, Yaw)
 void AJet_CPP::jetThrottle(float value)
 {
-
+	float newThrottle = (value * 10.0f) + throttleValue;
+	if (newThrottle <= maxThrottleValue && newThrottle >= 0.0f)
+	{
+		throttleValue = newThrottle;
+	}
+	else if (newThrottle > maxThrottleValue)
+	{
+		throttleValue = maxThrottleValue;
+	}
+	else
+	{
+		throttleValue = 0.0f;
+	}
 }
 
 void AJet_CPP::jetPitch(float value)
@@ -92,6 +110,13 @@ void AJet_CPP::jetRoll(float value)
 }
 
 void AJet_CPP::jetYaw(float value)
+{
+
+}
+
+
+//Jet Feature Definition Functions (Shooting)
+void AJet_CPP::shootBullets()
 {
 
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 
 #include "Components/SkeletalMeshComponent.h"
+#include "Engine/StaticMesh.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
@@ -42,13 +43,25 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void jetYaw(float value);
 
+	//Jet Movement Variables (Throttle, MaxThrottle)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float throttleValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float maxThrottleValue;
+
+
+	//Jet Feature Functions (Shooting)
+	UFUNCTION(BlueprintCallable)
+	void shootBullets();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	//Components for the Jet (Skeletal Mesh, Camera, Spring Arm)
-	UPROPERTY(EditAnywhere)
-	USkeletalMeshComponent* JetMesh;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* JetMesh;
 
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
