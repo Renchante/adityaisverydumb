@@ -31,10 +31,10 @@ public:
 
 	//Movement Car Declaration Functions (Throttle, Steering, HandBrake, Supercharge, Hyperbrake)
 	UFUNCTION(BlueprintCallable)
-	void Throttle(float value);
+	float Throttle(float value);
 
 	UFUNCTION(BlueprintCallable)
-	void Steering(float value);
+	float Steering(float value);
 
 	UFUNCTION(BlueprintCallable)
 	void HandBrakeON();

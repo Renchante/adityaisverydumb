@@ -14,7 +14,7 @@ ACar_CPP::ACar_CPP()
 	vehicleMovement->MaxNormalizedTireLoadFiltered = 2.0f;
 
 	//Torque Setup
-	vehicleMovement->MaxEngineRPM = 10000.0f;
+	vehicleMovement->MaxEngineRPM = 5700.0f;
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->Reset();
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(0.0f, 400.0f);
 	vehicleMovement->EngineSetup.TorqueCurve.GetRichCurve()->AddKey(1890.0f, 500.0f);
@@ -24,7 +24,7 @@ ACar_CPP::ACar_CPP()
 	vehicleMovement->SteeringCurve.GetRichCurve()->Reset();
 	vehicleMovement->SteeringCurve.GetRichCurve()->AddKey(0.0f, 1.0f);
 	vehicleMovement->SteeringCurve.GetRichCurve()->AddKey(40.0f, 0.7f);
-	vehicleMovement->SteeringCurve.GetRichCurve()->AddKey(120.0f, 0.6f);
+	vehicleMovement->SteeringCurve.GetRichCurve()->AddKey(120.0f, 0.6f); 
 
 	vehicleMovement->DifferentialSetup.DifferentialType = EVehicleDifferential4W::LimitedSlip_4W;
 	vehicleMovement->DifferentialSetup.FrontRearSplit = 0.65f;
@@ -61,8 +61,8 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	//Axis Inputs Car Movements (Moveing forward and turning)
-	PlayerInputComponent->BindAxis("MoveForward", this, &ACar_CPP::Throttle);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ACar_CPP::Steering);
+	//PlayerInputComponent->BindAxis("MoveForward", this, &ACar_CPP::Throttle);
+	//PlayerInputComponent->BindAxis("MoveRight", this, &ACar_CPP::Steering);
 
 	//Axis Inputs Camera (Pitch and Yaw Camera)
 	PlayerInputComponent->BindAxis("LookUp", this, &ACar_CPP::CameraPitch);
@@ -86,16 +86,20 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 
 //Car Movement Definition Functions (Throttle and Steering)
-void ACar_CPP::Throttle(float value)
+float ACar_CPP::Throttle(float value)
 {
 	value *= throttleSpeed;
 	GetVehicleMovementComponent()->SetThrottleInput(value);
+	
+	return value;
 }
 
-void ACar_CPP::Steering(float value)
+float ACar_CPP::Steering(float value)
 {
 	value *= steeringSpeed;
 	GetVehicleMovementComponent()->SetSteeringInput(value);
+
+	return steeringSpeed, value;
 }
 
 
