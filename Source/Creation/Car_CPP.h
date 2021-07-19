@@ -44,11 +44,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void UpdateAirControl(float DeltaTime);
 
-	UFUNCTION(BlueprintCallable)
+	/* UFUNCTION(BlueprintCallable)
 	void superChargeCarON();
 
 	UFUNCTION(BlueprintCallable)
-	void hyperBrake();
+	void hyperBrake(); */
 
 
 	//Camera and Mouse Input Function (Pitch and Yaw)

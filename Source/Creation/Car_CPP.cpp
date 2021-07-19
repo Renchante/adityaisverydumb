@@ -74,12 +74,6 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction("Handbrake", IE_Pressed, this, &ACar_CPP::HandBrakeON);
 	PlayerInputComponent->BindAction("Handbrake", IE_Released, this, &ACar_CPP::HandBrakeOFF);
 
-	//Action Inputs (Supercharge on)
-	PlayerInputComponent->BindAction("Supercharge", IE_Pressed, this, &ACar_CPP::superChargeCarON);
-
-	//Action Input (Hyperbrake)
-	PlayerInputComponent->BindAction("Hyperbrake", IE_Pressed, this, &ACar_CPP::hyperBrake);
-
 	//Action Inputs (Changing Perspective from Third Person to First Person)
 	PlayerInputComponent->BindAction("Change Perspective", IE_Pressed, this, &ACar_CPP::perspectiveToggle);
 }
@@ -119,7 +113,7 @@ void ACar_CPP::UpdateAirControl(float DeltaTime)
 
 }
 
-//Supercharge Definition Functions (On and Off)
+/* //Supercharge Definition Functions (On and Off)
 void ACar_CPP::superChargeCarON()
 {
 	float zVelocity = GetMesh()->GetPhysicsLinearVelocity().Z;
@@ -139,7 +133,7 @@ void ACar_CPP::hyperBrake()
 		FVector newVelocity = GetVelocity() * -1.0f;
 		GetMesh()->SetPhysicsLinearVelocity(newVelocity, true);
 	}
-}
+} */
 
 //Camera Definition Functions (Pitch and Yaw)
 void ACar_CPP::CameraPitch(float axisValue)
