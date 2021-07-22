@@ -31,10 +31,10 @@ public:
 
 	//Movement Car Declaration Functions (Throttle, Steering, HandBrake, Supercharge, Hyperbrake)
 	UFUNCTION(BlueprintCallable)
-	float Throttle(float value);
+	void Throttle(float value);
 
 	UFUNCTION(BlueprintCallable)
-	float Steering(float value);
+	void Steering(float value);
 
 	UFUNCTION(BlueprintCallable)
 	void HandBrakeON();
@@ -58,10 +58,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void CameraYaw(float axisValue);
 
+
+	//Other Car Functions (First to Third Person, Radio ON / OFF)
+	UFUNCTION(BlueprintCallable)
 	void perspectiveToggle();
 
+	UFUNCTION(BlueprintCallable)
+	bool radioToggle();
 
-	//Variables for the car (Speed, Throttle Speed, Steering Speed)
+	//Variables for the car (Speed, Throttle Speed, Steering Speed, Radio)
 	UPROPERTY(EditAnywhere)
 	float Speed;
 
@@ -70,6 +75,9 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float steeringSpeed;
+
+	UPROPERTY(EditAnywhere)
+	bool radioON;
 
 protected:
 	//Camera Components 

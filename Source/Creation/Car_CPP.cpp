@@ -39,11 +39,12 @@ ACar_CPP::ACar_CPP()
 	Speed = 4000.0f;
 	throttleSpeed = 10.0f;
 	steeringSpeed = 1.0f;
+	radioON = false;
 
 	//Setting up the spring arm and camera components 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(RootComponent);
-	SpringArm->TargetArmLength = 750.0f;
+	SpringArm->TargetArmLength = 500.0f;
 	SpringArm->bUsePawnControlRotation = true;
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -61,8 +62,8 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	//Axis Inputs Car Movements (Moveing forward and turning)
-	//PlayerInputComponent->BindAxis("MoveForward", this, &ACar_CPP::Throttle);
-	//PlayerInputComponent->BindAxis("MoveRight", this, &ACar_CPP::Steering);
+	PlayerInputComponent->BindAxis("MoveForward", this, &ACar_CPP::Throttle);
+	PlayerInputComponent->BindAxis("MoveRight", this, &ACar_CPP::Steering);
 
 	//Axis Inputs Camera (Pitch and Yaw Camera)
 	PlayerInputComponent->BindAxis("LookUp", this, &ACar_CPP::CameraPitch);
@@ -80,20 +81,16 @@ void ACar_CPP::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 
 //Car Movement Definition Functions (Throttle and Steering)
-float ACar_CPP::Throttle(float value)
+void ACar_CPP::Throttle(float value)
 {
 	value *= throttleSpeed;
 	GetVehicleMovementComponent()->SetThrottleInput(value);
-	
-	return value;
 }
 
-float ACar_CPP::Steering(float value)
+void ACar_CPP::Steering(float value)
 {
 	value *= steeringSpeed;
 	GetVehicleMovementComponent()->SetSteeringInput(value);
-
-	return steeringSpeed, value;
 }
 
 
@@ -155,14 +152,30 @@ void ACar_CPP::CameraYaw(float axisValue)
 void ACar_CPP::perspectiveToggle()
 {
 	float targetArm = SpringArm->TargetArmLength;
-	if (targetArm == 750.0f)
+	if (targetArm == 500.0f)
 	{
 		SpringArm->TargetArmLength = 0.0f;
 		SpringArm->bEnableCameraLag = false;
 	}
 	else
 	{
-		SpringArm->TargetArmLength = 750.0f;
+		SpringArm->TargetArmLength = 500.0f;
 		SpringArm->bEnableCameraLag = true;
 	}
+}
+
+bool ACar_CPP::radioToggle()
+{
+	if (radioON == false) 
+	{
+		radioON = true;
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("Playing Radio GaGa!"));
+	}
+	else
+	{
+		radioON = false;
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Black, TEXT("STOPPED Radio!"));
+	}
+
+	return radioON;
 }
